@@ -1,0 +1,49 @@
+﻿<syncfusion:ChromelessWindow x:Class="PropertyGridSample_CustomObject.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PropertyGridSample_CustomObject"
+        xmlns:syncfusion="http://schemas.syncfusion.com/wpf" x:Name="window"
+        xmlns:ie="http://schemas.microsoft.com/expression/2010/interactivity"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" syncfusion:SkinStorage.VisualStyle="Metro"
+        Title="PropertyGrid" Height="570" Width="900" >
+
+    <!--Command which used to load AddressCustomEditor at load time-->
+    <ie:Interaction.Triggers>
+        <ie:EventTrigger EventName="Loaded">
+            <ie:InvokeCommandAction Command="{Binding WindowLoadedCommand}" CommandParameter="{Binding ElementName=window}"/>
+        </ie:EventTrigger>
+    </ie:Interaction.Triggers>
+    <Window.DataContext>
+        <local:ViewModel/>
+    </Window.DataContext>
+   
+    <Grid Name="grid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock FontWeight="Bold" Margin="3" Text="Select any of the item to show the properties in the PropertyGrid" Grid.ColumnSpan="2"/>
+
+        <!--Command which is used to load PropertyGrid at selection of item--> 
+        <syncfusion:SfDataGrid  x:Name="Listview" ItemsSource="{Binding Collection}" Grid.Row="1" Margin="1" >
+            <ie:Interaction.Triggers>
+                <ie:EventTrigger EventName="SelectionChanged">
+                    <ie:InvokeCommandAction Command="{Binding SelectedItemChangedCommand}"  CommandParameter="{Binding ElementName=Listview}"/>
+                </ie:EventTrigger>
+            </ie:Interaction.Triggers>
+
+            <syncfusion:SfDataGrid.Columns>
+                <syncfusion:GridTextColumn MappingName="Name" DisplayBinding="{Binding Name}" Width="115"/>
+                <syncfusion:GridTextColumn MappingName="Street" DisplayBinding="{Binding Address.Street}" Width="115"/>
+                <syncfusion:GridTextColumn MappingName="City" DisplayBinding="{Binding Address.Region}" Width="115"/>
+                <syncfusion:GridTextColumn MappingName="Country" DisplayBinding="{Binding Address.Country}" Width="115"/>
+            </syncfusion:SfDataGrid.Columns>
+        </syncfusion:SfDataGrid>
+    </Grid>
+</syncfusion:ChromelessWindow>
